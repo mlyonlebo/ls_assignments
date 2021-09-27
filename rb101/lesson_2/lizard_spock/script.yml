@@ -1,0 +1,5 @@
+welcome: "Welcome, friend, to Rock, Paper, Scissors, Lizard, Spock!"
+move_selection: "What's your move? Enter a word or first letter."
+s_selector: "Um, scissors or Spock?"
+invalid_input: "You are valid, friend, but that input is not."
+game_over: "GAME OVER! Thanks for playing Rock, Paper, Scissors, Lizard, Spock!"
