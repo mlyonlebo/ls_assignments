@@ -1,19 +1,20 @@
+require 'pry'
 require 'yaml'
 SCRIPT = YAML.load_file('script.yml')
 
 scoreboard = {
-               'you' => 0,
-               'the computer' => 0,
-               'no one' => 0
-             }
+  'you' => 0,
+  'the computer' => 0,
+  'no one' => 0
+}
 
 winning_combos = {
-                    'rock' => ['scissors', 'lizard'],
-                    'paper' => ['rock', 'spock'],
-                    'scissors' => ['paper', 'lizard'],
-                    'lizard' => ['paper', 'spock'],
-                    'spock' => ['scissors', 'rock']
-                 }
+  'rock' => ['scissors', 'lizard'],
+  'paper' => ['rock', 'spock'],
+  'scissors' => ['paper', 'lizard'],
+  'lizard' => ['paper', 'spock'],
+  'spock' => ['scissors', 'rock']
+}
 
 MOVES = winning_combos.keys
                  
@@ -43,31 +44,35 @@ def pregnant_pause
   end
 end
 
-prompt(SCRIPT['welcome'])
+def get_move
+  prompt(SCRIPT['move_selection'])
+  input = gets.chomp.downcase
+  return input
+end
 
-loop do
-  input = ''
-  loop do
-    prompt(SCRIPT['move_selection'])
-    input = gets.chomp.downcase
-    if input == 's'
-      prompt(SCRIPT['s_selector'])
-      input = gets.chomp.downcase
-    else
-      MOVES.each do |move|
-        if move.start_with?(input)
-          input = move
-        end
+def get_s_move(input)
+  prompt(SCRIPT['s_selector'])
+  input = gets.chomp.downcase
+end
+
+def verify_move(input, valid?)
+  if input == 's'
+    get_s_move(input)
+  else
+    MOVES.each do |move|
+      if move.start_with?(input)
+        input = move
       end
     end
-    break if valid?(input)
+  end
+  if valid?(input)
+    return input
+  else
     prompt(SCRIPT['invalid_input'])
   end
-  
-  computer_choice = MOVES.sample
-  winner = who_won?(input, computer_choice, winning_combos)
-  scoreboard[winner] += 1
-  
+end
+
+def display_results(input, computer_choice, pregnant_pause, scoreboard, winner)
   prompt("You chose #{input.upcase}.
   The computer chose...")
   pregnant_pause
@@ -76,7 +81,18 @@ loop do
   prompt("#{winner.upcase} WON!!\n
   You have #{scoreboard['you']}.\n
   The computer has #{scoreboard['the computer']}.\n\n")
+end
 
+prompt(SCRIPT['welcome'])
+input = get_move
+verify_move(input)
+binding.pry
+
+loop do
+  computer_choice = MOVES.sample
+  winner = who_won?(input, computer_choice, winning_combos)
+  scoreboard[winner] += 1
+  display_results(input, computer_choice, pregnant_pause, scoreboard, winner)
   break if scoreboard.value?(3)
 end
 prompt(SCRIPT['game_over'])
