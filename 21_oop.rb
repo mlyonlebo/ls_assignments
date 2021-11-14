@@ -3,16 +3,14 @@
 class Deck
   attr_accessor :cards
 
-  # rubocop:disable Style/MutableConstant
   FULL_DECK = { 'A' => 4, '2' => 4, '3' => 4,
                 '4' => 4, '5' => 4, '6' => 4,
                 '7' => 4, '8' => 4, '9' => 4,
                 '10' => 4, 'J' => 4, 'Q' => 4,
-                'K' => 4 }
-  # rubocop:enable Style/MutableConstant
+                'K' => 4 }.freeze
 
   def initialize
-    @cards = FULL_DECK.clone
+    @cards = FULL_DECK.dup
   end
 
   def to_s
