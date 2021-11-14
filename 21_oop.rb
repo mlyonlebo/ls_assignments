@@ -63,19 +63,21 @@ class Hand
     total < 17
   end
 
-  # rubocop:disable Metrics/AbcSize
+  # rubocop:disable Metrics/MethodLength
   def display
     strings = ['', '', '', '', '', '', '', '']
+    card_padding = '|      |'
     cards.each do |card|
+      length = card.length - 1
       strings[1] += ' ______ '
-      strings[2] += "|#{card}#{' ' * (5 - (card.length - 1))}|"
-      strings[3] += '|      |'
-      strings[4] += '|      |'
-      strings[5] += "|#{'_' * (5 - (card.length - 1))}#{card}|"
+      strings[2] += "|#{card}#{' ' * (5 - length)}|"
+      strings[3] += card_padding
+      strings[4] += card_padding
+      strings[5] += "|#{'_' * (5 - length)}#{card}|"
     end
     puts strings
   end
-  # rubocop:enable Metrics/AbcSize
+  # rubocop:enable Metrics/MethodLength
 end
 
 module DealerPatter
